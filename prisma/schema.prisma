@@ -1,0 +1,122 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  email     String   @unique
+  name      String?
+
+  ideas       Ideas[]
+  sampleIdeas SampleIdeas[]
+
+  joinedHackathons    UserHackathonParticipants[]
+  organizedHackathons UserHackathonOrganizers[]
+  teamId              String?
+  team                Teams?                      @relation(fields: [teamId], references: [id])
+  Posts               Posts[]
+}
+
+model Ideas {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  title     String
+  theme     String
+  response  String
+
+  userId String
+  user   User    @relation(fields: [userId], references: [id])
+  chart  Charts?
+}
+
+model Hackathons {
+  id             String  @id @default(uuid())
+  hackathon_link String
+  hackathon_name String
+  imageUrl       String?
+  website_link   String
+  social         String?
+  theme          String
+  participants   String
+  date           String
+  lat            Float?
+  long           Float?
+  platform       String
+}
+
+model Charts {
+  id    String @id @default(uuid())
+  rules String
+
+  ideaId String @unique
+  idea   Ideas  @relation(fields: [ideaId], references: [id])
+}
+
+model SampleIdeas {
+  id       String @id @default(uuid())
+  title    String
+  response String
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model UserHackathons {
+  id                 String                      @id @default(uuid())
+  hackathon_name     String
+  hackathon_website  String
+  theme              String
+  imageUrl           String
+  createdAt          DateTime                    @default(now())
+  updatedAt          DateTime                    @updatedAt
+  location           String
+  description        String
+  contactInfo_1      String
+  contactInfo_2      String
+  contactEmail_1     String
+  contactEmail_2     String
+  participants       UserHackathonParticipants[]
+  organizers         UserHackathonOrganizers[]
+  total_participants Int?
+}
+
+model UserHackathonParticipants {
+  userId      String
+  user        User           @relation(fields: [userId], references: [id])
+  hackathonId String
+  hackathon   UserHackathons @relation(fields: [hackathonId], references: [id])
+
+  @@id([userId, hackathonId])
+}
+
+model UserHackathonOrganizers {
+  userId      String
+  user        User           @relation(fields: [userId], references: [id])
+  hackathonId String
+  hackathon   UserHackathons @relation(fields: [hackathonId], references: [id])
+
+  @@id([userId, hackathonId])
+}
+
+model Teams {
+  id                 String @id @default(uuid())
+  team_name          String
+  total_participants Int
+  users              User[]
+}
+
+model Posts {
+  id          String @id @default(uuid())
+  post_name   String
+  description String
+  link        String
+  userId      String
+  user        User   @relation(fields: [userId], references: [id])
+}
