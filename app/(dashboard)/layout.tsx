@@ -7,15 +7,18 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             className="min-h-screen"
             style={{
                 background: `linear-gradient(to bottom, 
-                    #171717 0%, #171717 4%,  /* Blue fades out */
-                    #171717 5%, #1F4D2E 15%, /* Soft transition from Blue to Green */
-                    #1F4D2E 16%, #171717 20%, /* Green smoothly blends into Neutral */
-                    #171717 21%, #0A0A0A 100% /* Neutral transitions to Neutral-950 */
+                    #171717 0%, #171717 1%,  
+                    #171717 1%, #1F4D2E 9%,  
+                    #1F4D2E 10%, #171717 20%,  
+                    #0a0a0a 100% /* Smooth transition to Neutral-950 */
                 )`
             }}
         >
+            {/* Full-width Navbar */}
             <Navbar />
-            <div className="max-w-6xl flex items-center justify-start mx-auto">
+
+            {/* Content Wrapper */}
+            <div className="max-w-6xl mx-auto px-4 flex items-start">
                 {children}
             </div>
         </div>
