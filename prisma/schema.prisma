@@ -36,14 +36,13 @@ model Ideas {
   chart  Charts?
 }
 
-model Hackathons {
+model Event {
   id             String  @id @default(uuid())
-  hackathon_link String
-  hackathon_name String
+  event_link String
+  event_name String
   imageUrl       String?
   website_link   String
   social         String?
-  theme          String
   participants   String
   start_date     String
   end_date       String

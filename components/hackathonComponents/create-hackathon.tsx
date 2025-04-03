@@ -16,34 +16,40 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-import { CalendarIcon } from 'lucide-react'
+import { CalendarIcon, MapPinIcon, LinkIcon, UsersIcon, MailIcon, GlobeIcon, HashIcon } from 'lucide-react'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Calendar } from '../ui/calendar'
 import { format } from 'date-fns'
 import { cn } from '@/lib/utils'
 import { Textarea } from '../ui/textarea'
 import ImageUpload from '@/utils/uploadImage'
+import { hackathonSchema } from '@/schemas/hackathonSchema'
 
 
-const CreateEvent = () => {
-    const form = useForm<z.infer<typeof EventSchema>>({
-        resolver: zodResolver(EventSchema),
+const CreateHackathon = () => {
+    const form = useForm<z.infer<typeof hackathonSchema>>({
+        resolver: zodResolver(hackathonSchema),
         defaultValues: {
-            hackathon_link: "",
             hackathon_name: "",
-            imageUrl: "",
-            website_link: "",
-            social: "",
+            hackathon_website: "",
             theme: "",
-            participants: "",
-            start_date: "",
-            end_date:"",
-            pincode: "",
+            imageUrl: "",
             location: "",
+            description: "",
+            contactInfo_1: "",
+            contactInfo_2: "",
+            contactEmail_1: "",
+            contactEmail_2: "",
+            start_date: "",
+            end_date: "",
+            social: "",
+            pincode: "",
+            website_link: ""
         },
     })
 
-    function onSubmit(values: z.infer<typeof EventSchema>) {
+    function onSubmit(values: z.infer<typeof hackathonSchema>) {
+        console.log("Form submitted")
         console.log(values)
     }
     return (
@@ -75,7 +81,7 @@ const CreateEvent = () => {
                                             <InputEvent
                                                 placeholder='Event name'
                                                 type='text'
-                                                className='text-6xl mb-5 text-secondary border-0 font-bold'
+                                                className='text-4xl mb-3 leading-normal pb-3 border-0 font-bold text-white' // Add padding-bottom
                                                 {...field}
                                             />
                                             <FormMessage />
@@ -100,9 +106,9 @@ const CreateEvent = () => {
                                                                 )}
                                                             >
                                                                 {field.value ? (
-                                                                    format(new Date(field.value), "PPP") // Ensure Date object
+                                                                    format(new Date(field.value), "PPP")
                                                                 ) : (
-                                                                    <span>End date</span>
+                                                                    <span>Start date</span>
                                                                 )}
                                                                 <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                                                             </Button>
@@ -111,8 +117,8 @@ const CreateEvent = () => {
                                                     <PopoverContent className="w-auto p-0" align="start">
                                                         <Calendar
                                                             mode="single"
-                                                            selected={field.value ? new Date(field.value) : undefined} // Ensure Date object
-                                                            onSelect={(date) => field.onChange(date?.toISOString())} // Convert Date to string
+                                                            selected={field.value ? new Date(field.value) : undefined}
+                                                            onSelect={(date) => field.onChange(date?.toISOString())}
                                                             disabled={(date) => date < new Date()}
                                                             initialFocus
                                                         />
@@ -123,8 +129,6 @@ const CreateEvent = () => {
                                             </FormItem>
                                         )}
                                     />
-
-
 
                                     <FormField
                                         control={form.control}
@@ -142,7 +146,7 @@ const CreateEvent = () => {
                                                                 )}
                                                             >
                                                                 {field.value ? (
-                                                                    format(new Date(field.value), "PPP") // Ensure Date object
+                                                                    format(new Date(field.value), "PPP")
                                                                 ) : (
                                                                     <span>End date</span>
                                                                 )}
@@ -153,33 +157,32 @@ const CreateEvent = () => {
                                                     <PopoverContent className="w-auto p-0" align="start">
                                                         <Calendar
                                                             mode="single"
-                                                            selected={field.value ? new Date(field.value) : undefined} // Ensure Date object
-                                                            onSelect={(date) => field.onChange(date?.toISOString())} // Convert Date to string
+                                                            selected={field.value ? new Date(field.value) : undefined}
+                                                            onSelect={(date) => field.onChange(date?.toISOString())}
                                                             disabled={(date) => date < new Date()}
                                                             initialFocus
                                                         />
                                                     </PopoverContent>
                                                 </Popover>
-
                                                 <FormMessage />
                                             </FormItem>
                                         )}
                                     />
-
 
                                     <FormField
                                         control={form.control}
                                         name="location"
                                         render={({ field }) => (
                                             <FormItem>
-                                                {/* <FormLabel className='text-secondary'>Location</FormLabel> */}
-                                                <Input
-                                                    placeholder='Enter location'
-                                                    type='text'
-                                                    className='border-neutral-700 w-60'
-
-                                                    {...field}
-                                                />
+                                                <div className='relative'>
+                                                    <MapPinIcon className='absolute left-3 top-3 h-4 w-4 text-secondary' />
+                                                    <Input
+                                                        placeholder='Enter location'
+                                                        type='text'
+                                                        className='border-neutral-700 w-60 text-secondary pl-8'
+                                                        {...field}
+                                                    />
+                                                </div>
                                                 <FormMessage />
                                             </FormItem>
                                         )}
@@ -190,13 +193,15 @@ const CreateEvent = () => {
                                         name="pincode"
                                         render={({ field }) => (
                                             <FormItem>
-                                                {/* <FormLabel className='text-secondary'>Pincode</FormLabel> */}
-                                                <Input
-                                                    placeholder='Pincode'
-                                                    type='text'
-                                                    className='border-neutral-700 w-60'
-                                                    {...field}
-                                                />
+                                                <div className='relative'>
+                                                    <HashIcon className='absolute left-3 top-3 h-4 w-4 text-secondary' />
+                                                    <Input
+                                                        placeholder='Pincode'
+                                                        type='text'
+                                                        className='border-neutral-700 w-60 text-secondary pl-8'
+                                                        {...field}
+                                                    />
+                                                </div>
                                                 <FormMessage />
                                             </FormItem>
                                         )}
@@ -204,16 +209,18 @@ const CreateEvent = () => {
 
                                     <FormField
                                         control={form.control}
-                                        name="hackathon_link"
+                                        name="hackathon_website"
                                         render={({ field }) => (
                                             <FormItem>
-                                                {/* <FormLabel className='text-secondary'>Pincode</FormLabel> */}
-                                                <Input
-                                                    placeholder='Event link'
-                                                    type='text'
-                                                    className='border-neutral-700 w-60'
-                                                    {...field}
-                                                />
+                                                <div className='relative'>
+                                                    <LinkIcon className='absolute left-3 top-3 h-4 w-4 text-secondary' />
+                                                    <Input
+                                                        placeholder='Event link'
+                                                        type='text'
+                                                        className='border-neutral-700 w-60 pl-8'
+                                                        {...field}
+                                                    />
+                                                </div>
                                                 <FormMessage />
                                             </FormItem>
                                         )}
@@ -224,13 +231,15 @@ const CreateEvent = () => {
                                         name="website_link"
                                         render={({ field }) => (
                                             <FormItem>
-                                                {/* <FormLabel className='text-secondary'>Pincode</FormLabel> */}
-                                                <Input
-                                                    placeholder='Website link'
-                                                    type='text'
-                                                    className='border-neutral-700 w-60'
-                                                    {...field}
-                                                />
+                                                <div className='relative'>
+                                                    <GlobeIcon className='absolute left-3 top-3 h-4 w-4 text-secondary' />
+                                                    <Input
+                                                        placeholder='Website link'
+                                                        type='text'
+                                                        className='border-neutral-700 w-60 text-secondary pl-8'
+                                                        {...field}
+                                                    />
+                                                </div>
                                                 <FormMessage />
                                             </FormItem>
                                         )}
@@ -241,13 +250,15 @@ const CreateEvent = () => {
                                         name="social"
                                         render={({ field }) => (
                                             <FormItem>
-                                                {/* <FormLabel className='text-secondary'>Pincode</FormLabel> */}
-                                                <Input
-                                                    placeholder='Social (any one)'
-                                                    type='text'
-                                                    className='border-neutral-700 w-60'
-                                                    {...field}
-                                                />
+                                                <div className='relative'>
+                                                    <LinkIcon className='absolute left-3 top-3 h-4 w-4 text-secondary' />
+                                                    <Input
+                                                        placeholder='Social (any one)'
+                                                        type='text'
+                                                        className='border-neutral-700 w-60 text-secondary pl-8'
+                                                        {...field}
+                                                    />
+                                                </div>
                                                 <FormMessage />
                                             </FormItem>
                                         )}
@@ -255,49 +266,102 @@ const CreateEvent = () => {
 
                                     <FormField
                                         control={form.control}
-                                        name="participants"
+                                        name="contactInfo_1"
                                         render={({ field }) => (
                                             <FormItem>
-                                                {/* <FormLabel className='text-secondary'>Pincode</FormLabel> */}
-                                                <Input
-                                                    placeholder='Max participants'
-                                                    type='text'
-                                                    className='border-neutral-700 w-60'
-                                                    {...field}
-                                                />
+                                                <div className='relative'>
+                                                    <UsersIcon className='absolute left-3 top-3 h-4 w-4 text-secondary' />
+                                                    <Input
+                                                        placeholder='Max participants'
+                                                        type='text'
+                                                        className='border-neutral-700 w-60 text-secondary pl-8'
+                                                        {...field}
+                                                    />
+                                                </div>
                                                 <FormMessage />
                                             </FormItem>
                                         )}
                                     />
 
+                                    <FormField
+                                        control={form.control}
+                                        name="contactInfo_2"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <div className='relative'>
+                                                    <UsersIcon className='absolute left-3 top-3 h-4 w-4 text-secondary' />
+                                                    <Input
+                                                        placeholder='Max participants'
+                                                        type='text'
+                                                        className='border-neutral-700 w-60 text-secondary pl-8'
+                                                        {...field}
+                                                    />
+                                                </div>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
 
+                                    <FormField
+                                        control={form.control}
+                                        name="contactEmail_1"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <div className='relative'>
+                                                    <MailIcon className='absolute left-3 top-3 h-4 w-4 text-secondary' />
+                                                    <Input
+                                                        placeholder='Contact Email'
+                                                        type='text'
+                                                        className='border-neutral-700 w-60 text-secondary pl-8'
+                                                        {...field}
+                                                    />
+                                                </div>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+
+                                    <FormField
+                                        control={form.control}
+                                        name="contactEmail_2"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <div className='relative'>
+                                                    <MailIcon className='absolute left-3 top-3 h-4 w-4 text-secondary' />
+                                                    <Input
+                                                        placeholder='Contact Email'
+                                                        type='text'
+                                                        className='border-neutral-700 w-60 text-secondary pl-8'
+                                                        {...field}
+                                                    />
+                                                </div>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
                                 </div>
                                 <FormField
                                     control={form.control}
                                     name="description"
                                     render={({ field }) => (
                                         <FormItem>
-                                            {/* <FormLabel className='text-secondary'>Pincode</FormLabel> */}
                                             <Textarea
                                                 placeholder='Description in detail'
-                                                className='border-neutral-70 border-neutral-700 mt-5'
+                                                className='border-neutral-70 border-neutral-700 mt-5 text-secondary'
                                                 {...field}
                                             />
                                             <FormMessage />
                                         </FormItem>
                                     )}
                                 />
-                            <Button variant={'secondary'} size={'lg'} className='w-full text-xl' type="submit">Create Event</Button>
-
-                                
+                                <Button variant={'secondary'} size={'lg'} className='w-full text-xl' type="submit">Create Event</Button>
                             </div>
                         </form>
                     </Form>
-
                 </div>
             </div>
         </div>
     )
 }
 
-export default CreateEvent
+export default CreateHackathon
