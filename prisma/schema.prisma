@@ -45,9 +45,10 @@ model Hackathons {
   social         String?
   theme          String
   participants   String
-  date           String
-  lat            Float?
-  long           Float?
+  start_date     String
+  end_date       String
+  location       String
+  pincode        String
   platform       String
 }
 

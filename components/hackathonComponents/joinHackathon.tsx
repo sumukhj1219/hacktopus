@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { joinHackathonSchmea } from "@/schemas/joinHackathonSchema";
 import { z } from "zod";
 import { useParams } from "next/navigation";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/components/ui/input-event";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import axios from "axios";

@@ -14,10 +14,8 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                 )`
             }}
         >
-            {/* Full-width Navbar */}
             <Navbar />
 
-            {/* Content Wrapper */}
             <div className="max-w-6xl mx-auto px-4 flex items-start">
                 {children}
             </div>
