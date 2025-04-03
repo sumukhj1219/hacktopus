@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Search, Calendar, Ticket, User, Plus } from 'lucide-react'
+import { Search, Calendar, Ticket, User, Plus, Lightbulb } from 'lucide-react'
 import { Button } from '../ui/button'
 import { useEffect, useState } from 'react'
 
@@ -33,7 +33,7 @@ export default function Navbar() {
         <div className="flex items-center gap-6">
           {[
             { path: '/events', text: 'Events', icon: <Ticket className="h-5 w-5" /> },
-            { path: '/calendars', text: 'Calendars', icon: <Calendar className="h-5 w-5" /> },
+            { path: '/idea', text: 'New Idea', icon: <Lightbulb className="h-5 w-5" /> },
             { path: '/hackathons', text: 'Discover', icon: <Search className="h-5 w-5" /> },
           ].map((link) => (
             <Link 

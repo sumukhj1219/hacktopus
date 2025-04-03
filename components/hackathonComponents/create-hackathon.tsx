@@ -354,7 +354,7 @@ const CreateHackathon = () => {
                                         </FormItem>
                                     )}
                                 />
-                                <Button variant={'secondary'} size={'lg'} className='w-full text-xl' type="submit">Create Event</Button>
+                                <Button variant={'secondary'} size={'lg'} className='w-full text-xl' type="submit">Create Hackathon</Button>
                             </div>
                         </form>
                     </Form>

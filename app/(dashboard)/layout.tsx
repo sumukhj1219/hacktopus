@@ -16,7 +16,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         >
             <Navbar />
 
-            <div className="max-w-6xl mx-auto px-4 flex items-start">
+            <div className="max-w-6xl mx-auto px-4 flex items-center justify-center">
                 {children}
             </div>
         </div>
