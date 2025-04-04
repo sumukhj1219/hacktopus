@@ -8,7 +8,7 @@ const IdeaPage = () => {
     //  const {user} = useUser()
     //  if(!user) return redirect("/")
     return (
-        <div className="flex items-center justify-center min-h-screen"> {/* Added centering classes */}
+        <div className=""> {/* Added centering classes */}
             {/* <div className="flex flex-col items-center justify-center h-full">
                 <h1 className="text-3xl md:text-5xl font-bold text-center font-orbitron text-orange-600">
                     Idea Generator

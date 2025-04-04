@@ -69,7 +69,7 @@ const CreateEvent = () => {
                                         <InputEvent
                                             placeholder='Event name'
                                             type='text'
-                                            className='text-3xl md:text-4xl mb-3 leading-normal pb-3 border-0 font-bold text-white'
+                                            className='text-3xl md:text-4xl  mb-3 leading-normal pb-3 border-0 font-bold text-white'
                                             {...field}
                                         />
                                         <FormMessage />
@@ -128,7 +128,7 @@ const CreateEvent = () => {
                                                         <Input
                                                             placeholder={fieldName.replace("_", " ").toUpperCase()}
                                                             type='text'
-                                                            className='border-neutral-700 w-full md:w-60 pl-10 text-secondary'
+                                                            className='border-neutral-700 bg-neutral-900 w-full md:w-60 pl-10 text-secondary'
                                                             {...field}
                                                         />
                                                     </div>
@@ -149,7 +149,7 @@ const CreateEvent = () => {
                                             {/* <FileTextIcon className="absolute left-5 top-5 h-5 w-5 text-gray-500" /> */}
                                             <Textarea
                                                 placeholder='Description in detail'
-                                                className='border-neutral-700 mt-5 text-secondary pl-10'
+                                                className='border-neutral-700 bg-neutral-900 mt-5 text-secondary pl-10'
                                                 {...field}
                                             />
                                         </div>

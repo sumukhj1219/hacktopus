@@ -37,7 +37,7 @@ export default function RootLayout({
     >
       <html lang="en" suppressHydrationWarning>
         <body
-          className={` ${poppins.variable} font-orbitron min-h-screen antialiased bg-neutral-900`}
+          className={` ${poppins.variable} font-orbitron min-h-screen antialiased bg-black`}
         >
                 {children}
         </body>

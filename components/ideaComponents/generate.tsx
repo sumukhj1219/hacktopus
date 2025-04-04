@@ -21,6 +21,7 @@ import { Textarea } from "../ui/textarea";
 import { Loader, Sparkle, Lightbulb, ArrowRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
+import { CardSpotlightDemo } from "./card-spotlight";
 
 const IdeaGenerator = () => {
   const [loading, setLoading] = useState(false);
@@ -63,93 +64,100 @@ const IdeaGenerator = () => {
   }
 
   return (
-    <div className="mx-auto px-4 flex items-center justify-center h-screen"> {/* Adjusted for centering */}
-      <Card className="w-full max-w-md bg-neutral-800"> {/* Added max-w-md for better mobile view */}
-        <CardContent className="p-6 space-y-6">
-          {/* <div className="flex items-center justify-center mb-2">
+      <div className="mx-auto flex items-center justify-center h-screen"> {/* Adjusted for centering */}
+    <CardSpotlightDemo>
+
+        <Card className="w-full  max-w-md border-none bg-transparent  text-white">
+    {/* Added max-w-md for better mobile view */}
+          <CardContent className="p-6 space-y-6 ">
+            {/* <div className="flex items-center justify-center mb-2">
             <div className=" rounded-full p-3">
               <Lightbulb className="h-8 w-8 text-orange-500" />
             </div>
           </div> */}
 
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-lg font-medium">Project Title</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Enter your project title"
-                        {...field}
-                        className="rounded-lg py-3"
-                      />
-                    </FormControl>
-                    <FormDescription className="text-xs text-muted-foreground">
-                      A catchy name for your hackathon project
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="theme"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-lg font-medium">Hackathon Theme</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Describe the hackathon theme or challenge"
-                        {...field}
-                        className="rounded-lg min-h-[120px] resize-none"
-                      />
-                    </FormControl>
-                    <FormDescription className="text-xs text-muted-foreground">
-                      Detailed description of the hackathon theme or problem statement
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <Button
-                type="submit"
-                disabled={loading}
-                className="w-full py-6 rounded-lg text-lg relative overflow-hidden group"
-              >
-                <span className="relative z-10 flex items-center justify-center">
-                  {loading ? (
-                    <>
-                      <Loader className="mr-2 h-5 w-5 animate-spin" />
-                      Generating ideas...
-                    </>
-                  ) : (
-                    <>
-                      Generate Brilliant Ideas
-                      <Sparkle className="ml-2 h-5 w-5 group-hover:animate-pulse" />
-                    </>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+                <FormField
+                  control={form.control}
+                  name="title"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-2xl font-medium relative">Project Title</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Enter your project title"
+                          {...field}
+                          className="rounded-lg py-3 relative"
+                        />
+                      </FormControl>
+                      <FormDescription className="text-xs text-muted-foreground relative">
+                        A catchy name for your hackathon project
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
                   )}
-                </span>
-              </Button>
+                />
 
-              {success && response && (
-                <Link
-                  href={`/sample/${encodeURIComponent(response)}`}
-                  className="flex items-center justify-center w-full p-4 mt-4 text-orange-600 font-medium rounded-lg bg-orange-50 dark:bg-orange-900/20 hover:bg-orange-100 dark:hover:bg-orange-900/30 transition-colors"
+                <FormField
+                  control={form.control}
+                  name="theme"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className=" font-medium relative text-2xl">Hackathon Theme</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Describe the hackathon theme or challenge"
+                          {...field}
+                          className="rounded-lg min-h-[120px] resize-none relative"
+                        />
+                      </FormControl>
+                      <FormDescription className="text-xs text-muted-foreground relative">
+                        Detailed description of the hackathon theme or problem statement
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full py-6 rounded-lg text-lg relative overflow-hidden group"
                 >
-                  Ideas Generated
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              )}
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
-    </div>
+                  <span className="relative z-10 flex items-center justify-center">
+                    {loading ? (
+                      <>
+                        <Loader className="mr-2 h-5 w-5 animate-spin" />
+                        Generating ideas...
+                      </>
+                    ) : (
+                      <>
+                        Generate Brilliant Ideas
+                        <Sparkle className="ml-2 h-5 w-5 group-hover:animate-pulse" />
+                      </>
+                    )}
+                  </span>
+                </Button>
+
+                {success && response && (
+                  <Link
+                    href={`/sample/${encodeURIComponent(response)}`}
+                    className="flex items-center justify-center w-full p-4 mt-4 text-orange-600 font-medium rounded-lg bg-orange-50 dark:bg-orange-900/20 hover:bg-orange-100 dark:hover:bg-orange-900/30 transition-colors"
+                  >
+                    Ideas Generated
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                )}
+              </form>
+            </Form>
+          </CardContent>
+
+        </Card>
+    </CardSpotlightDemo>
+
+      </div>
+
   );
 };
 

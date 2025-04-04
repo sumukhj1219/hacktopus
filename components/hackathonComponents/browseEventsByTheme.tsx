@@ -22,7 +22,7 @@ const BrowseEventsByTheme = () => {
             <h1 className="text-3xl text-secondary font-bold mb-6">Browse by Themes</h1>
             <div className="grid grid-cols-3 gap-4">
                 {themes.map((theme, index) => (
-                    <Card key={index} className="bg-neutral-800/45 w-[270px] h-[110px] hover:border-neutral-700 border border-neutral-800 flex items-start p-4">
+                    <Card key={index} className="bg-neutral-900 w-[270px] h-[110px] hover:border-neutral-700 border border-neutral-800 flex items-start p-4">
                         {theme.icon}
                         <div className="ml-4">
                             <CardTitle className="text-xl text-secondary font-semibold">{theme.name}</CardTitle>
