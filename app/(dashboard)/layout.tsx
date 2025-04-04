@@ -11,7 +11,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             <Navbar />
             <GridBackgroundDemo>
 
-            <div className="max-w-6xl mx-auto px-4 flex items-center justify-center">
+            <div className="max-w-6xl mx-auto px-4 ">
                 {children}
             </div>
         </GridBackgroundDemo>

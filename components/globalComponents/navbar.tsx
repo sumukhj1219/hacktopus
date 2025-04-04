@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { Search, Calendar, Ticket, User, Plus, Lightbulb } from 'lucide-react'
 import { Button } from '../ui/button'
 import { useEffect, useState } from 'react'
+import Profile from '../userComponents/profile'
 
 export default function Navbar() {
   const path = usePathname()
@@ -55,7 +56,7 @@ export default function Navbar() {
               <Plus className="h-4 w-4" /> Create Event
             </Button>
           </Link>
-          <User className="h-6 w-6 text-gray-400 hover:text-white cursor-pointer transition duration-200" />
+          <Profile />
         </div>
 
       </div>
