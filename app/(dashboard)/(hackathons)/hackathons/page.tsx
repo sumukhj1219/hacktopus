@@ -1,4 +1,5 @@
 "use client"
+import GetEvents from "@/components/eventComponents/get-events";
 import BrowseEventsByTheme from "@/components/hackathonComponents/browseEventsByTheme";
 import Hackathons from "@/components/hackathonComponents/hackathons";
 import dynamic from "next/dynamic";
@@ -17,7 +18,7 @@ export default function Page() {
         <p className="flex items-center justify-start text-secondary py-2">
           Explore popular events near you, browse by category, or check out some of the great community calendars.
         </p>
-        <Hackathons />
+        <GetEvents />
         <BrowseEventsByTheme />
         {/* <Tabs defaultValue="list" className="max-w-6xl mx-auto px-4">
         <TabsList className="grid w-full grid-cols-2">

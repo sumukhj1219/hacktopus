@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React, { useState } from 'react'
 import { InputEvent } from '../ui/input-event'
 import { Input } from '../ui/input'
 import { EventSchema } from '@/schemas/eventSchema'
@@ -21,8 +21,10 @@ import { format } from 'date-fns'
 import { cn } from '@/lib/utils'
 import { Textarea } from '../ui/textarea'
 import ImageUpload from '@/utils/uploadImage'
+import axios from 'axios'
 
 const CreateEvent = () => {
+    const [loading, setLoading] = useState(false)
     const form = useForm<z.infer<typeof EventSchema>>({
         resolver: zodResolver(EventSchema),
         defaultValues: {
@@ -39,8 +41,18 @@ const CreateEvent = () => {
         },
     })
 
-    function onSubmit(values: z.infer<typeof EventSchema>) {
-        console.log("Form submitted", values)
+    async function onSubmit(values: z.infer<typeof EventSchema>) {
+        setLoading(true)
+        try {
+            const response = await axios.post("/api/events/create-event", values)
+            if (response.status === 200) {
+                console.log("Form submitted", values)
+            }
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setLoading(false)
+        }
     }
 
     return (

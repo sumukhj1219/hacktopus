@@ -9,13 +9,26 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  email     String   @unique
-  name      String?
-
+  id            String   @id @default(uuid())
+  createdAt     DateTime @default(now())
+  email         String   @unique
+  firstName     String?
+  lastName      String?
+  phone         String?
+  username      String?
+  bio           String?
+  location      String?
+  instagramLink String?
+  githubLink    String?
+  youtubeLink   String?
+  twitterLink   String?
+  websiteLink   String?
+  linkedinLink  String?
+  imageUrl      String?
+  
   ideas       Ideas[]
   sampleIdeas SampleIdeas[]
+  organizedEvents       Events[]
 
   joinedHackathons    UserHackathonParticipants[]
   organizedHackathons UserHackathonOrganizers[]
@@ -36,19 +49,21 @@ model Ideas {
   chart  Charts?
 }
 
-model Event {
-  id             String  @id @default(uuid())
-  event_link String
-  event_name String
-  imageUrl       String?
-  website_link   String
-  social         String?
-  participants   String
-  start_date     String
-  end_date       String
-  location       String
-  pincode        String
-  platform       String
+model Events {
+  id           String  @id @default(uuid())
+  event_link   String
+  event_name   String
+  imageUrl     String?
+  website_link String
+  social       String?
+  participants String
+  start_date   String
+  end_date     String
+  location     String
+  pincode      String
+
+  createdBy       String
+  user         User @relation(fields: [createdBy], references: [id])
 }
 
 model Charts {
@@ -68,7 +83,7 @@ model SampleIdeas {
   user   User   @relation(fields: [userId], references: [id])
 }
 
-model UserHackathons {
+model Hackathons {
   id                 String                      @id @default(uuid())
   hackathon_name     String
   hackathon_website  String
@@ -91,7 +106,7 @@ model UserHackathonParticipants {
   userId      String
   user        User           @relation(fields: [userId], references: [id])
   hackathonId String
-  hackathon   UserHackathons @relation(fields: [hackathonId], references: [id])
+  hackathon   Hackathons @relation(fields: [hackathonId], references: [id])
 
   @@id([userId, hackathonId])
 }
@@ -100,7 +115,7 @@ model UserHackathonOrganizers {
   userId      String
   user        User           @relation(fields: [userId], references: [id])
   hackathonId String
-  hackathon   UserHackathons @relation(fields: [hackathonId], references: [id])
+  hackathon   Hackathons @relation(fields: [hackathonId], references: [id])
 
   @@id([userId, hackathonId])
 }

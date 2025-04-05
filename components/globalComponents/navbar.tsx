@@ -51,8 +51,8 @@ export default function Navbar() {
 
         <div className="flex items-center gap-4">
           <span className="text-sm text-gray-400">22:17 GMT+5:30</span>
-          <Link href="/create-event">
-            <Button variant={'secondary'} >
+          <Link href="/create">
+            <Button variant={'default'} className='text-secondary' >
               <Plus className="h-4 w-4" /> Create Event
             </Button>
           </Link>
