@@ -25,16 +25,20 @@ model User {
   websiteLink   String?
   linkedinLink  String?
   imageUrl      String?
-  
-  ideas       Ideas[]
-  sampleIdeas SampleIdeas[]
-  organizedEvents       Events[]
+
+  ideas           Ideas[]
+  sampleIdeas     SampleIdeas[]
+  organizedEvents Events[]      @relation("OrganizedEvents")
+  joinedEvents    Events[]      @relation("JoinedEvents")
 
   joinedHackathons    UserHackathonParticipants[]
   organizedHackathons UserHackathonOrganizers[]
   teamId              String?
   team                Teams?                      @relation(fields: [teamId], references: [id])
   Posts               Posts[]
+  JoinedEvents        JoinedEvents[]
+
+  @@index([teamId])
 }
 
 model Ideas {
@@ -47,6 +51,8 @@ model Ideas {
   userId String
   user   User    @relation(fields: [userId], references: [id])
   chart  Charts?
+
+  @@index([userId])
 }
 
 model Events {
@@ -63,8 +69,22 @@ model Events {
   pincode      String
   description  String
 
-  createdBy       String
-  user         User @relation(fields: [createdBy], references: [id])
+  members      User[]         @relation("JoinedEvents")
+  createdBy    String
+  user         User           @relation("OrganizedEvents", fields: [createdBy], references: [id])
+  JoinedEvents JoinedEvents[]
+
+  @@index([createdBy])
+}
+
+model JoinedEvents {
+  memberId String
+  member   User   @relation(fields: [memberId], references: [id])
+  eventId  String
+  event    Events @relation(fields: [eventId], references: [id])
+
+  @@id([memberId, eventId])
+  @@index([eventId])
 }
 
 model Charts {
@@ -73,6 +93,8 @@ model Charts {
 
   ideaId String @unique
   idea   Ideas  @relation(fields: [ideaId], references: [id])
+
+  @@index([ideaId])
 }
 
 model SampleIdeas {
@@ -82,6 +104,8 @@ model SampleIdeas {
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
 
 model Hackathons {
@@ -98,27 +122,29 @@ model Hackathons {
   contactInfo_2      String
   contactEmail_1     String
   contactEmail_2     String
+  total_participants Int?
   participants       UserHackathonParticipants[]
   organizers         UserHackathonOrganizers[]
-  total_participants Int?
 }
 
 model UserHackathonParticipants {
   userId      String
-  user        User           @relation(fields: [userId], references: [id])
+  user        User       @relation(fields: [userId], references: [id])
   hackathonId String
   hackathon   Hackathons @relation(fields: [hackathonId], references: [id])
 
   @@id([userId, hackathonId])
+  @@index([hackathonId])
 }
 
 model UserHackathonOrganizers {
   userId      String
-  user        User           @relation(fields: [userId], references: [id])
+  user        User       @relation(fields: [userId], references: [id])
   hackathonId String
   hackathon   Hackathons @relation(fields: [hackathonId], references: [id])
 
   @@id([userId, hackathonId])
+  @@index([hackathonId])
 }
 
 model Teams {
@@ -135,4 +161,6 @@ model Posts {
   link        String
   userId      String
   user        User   @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
