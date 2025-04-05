@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
     try {
+        
         const user = await currentUser()
         if (!user) {
             return NextResponse.json({ message: "Unauthourized user" }, { status: 405 })
@@ -17,6 +18,8 @@ export async function POST(request: NextRequest) {
         if (!existingUser) {
             return NextResponse.json({ message: "Unauthourized user" }, { status: 405 })
         }
+
+
         const body = await request.json()
         const { event_link,
             event_name,
@@ -27,9 +30,9 @@ export async function POST(request: NextRequest) {
             start_date,
             end_date,
             pincode,
-            location } = body
+            location, description } = body
 
-        if (!event_link || !event_name || !imageUrl || !website_link || !social || !participants || !start_date || !end_date || !pincode || !location) {
+        if (!event_link || !event_name || !imageUrl || !website_link || !social || !participants || !start_date || !end_date || !pincode || !location || !description) {
             return NextResponse.json({message:"All fields are required"})
         }
 
@@ -45,6 +48,7 @@ export async function POST(request: NextRequest) {
               end_date,
               pincode,
               location,
+              description,
               createdBy: existingUser.id, 
             },
           });

@@ -61,6 +61,7 @@ model Events {
   end_date     String
   location     String
   pincode      String
+  description  String
 
   createdBy       String
   user         User @relation(fields: [createdBy], references: [id])

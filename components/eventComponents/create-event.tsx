@@ -38,6 +38,7 @@ const CreateEvent = () => {
             end_date: "",
             pincode: "",
             location: "",
+            description:""
         },
     })
 
