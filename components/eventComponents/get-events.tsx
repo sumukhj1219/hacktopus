@@ -16,6 +16,7 @@ import {
 import { Separator } from "../ui/separator";
 import { Events } from "@prisma/client";
 import { format } from 'date-fns';
+import { JoinEventForm } from "./join-event";
 
 const GetEvents = () => {
   const [events, setEvents] = useState<Events[]>([]);
@@ -111,7 +112,7 @@ const GetEvents = () => {
 
                 
               </Link>
-              <Button variant={'secondary'} className="text-black">Join</Button>
+              <JoinEventForm eventId={selectedEvent.id} />
               </div>
              
               <div
