@@ -1,6 +1,7 @@
 "use client"
 import GetEvents from "@/components/eventComponents/get-events";
 import BrowseEventsByTheme from "@/components/hackathonComponents/browseEventsByTheme";
+import DisplayHackathons from "@/components/hackathonComponents/get-hackathons";
 import Hackathons from "@/components/hackathonComponents/hackathons";
 import dynamic from "next/dynamic";
 // import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -32,6 +33,7 @@ export default function Page() {
           <MapComponent />
         </TabsContent>
       </Tabs> */}
+      <DisplayHackathons />
       </div>
     </div>
 

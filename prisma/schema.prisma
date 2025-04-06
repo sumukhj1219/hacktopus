@@ -9,34 +9,32 @@ datasource db {
 }
 
 model User {
-  id            String   @id @default(uuid())
-  createdAt     DateTime @default(now())
-  email         String   @unique
-  firstName     String?
-  lastName      String?
-  phone         String?
-  username      String?
-  bio           String?
-  location      String?
-  instagramLink String?
-  githubLink    String?
-  youtubeLink   String?
-  twitterLink   String?
-  websiteLink   String?
-  linkedinLink  String?
-  imageUrl      String?
-
-  ideas           Ideas[]
-  sampleIdeas     SampleIdeas[]
-  organizedEvents Events[]      @relation("OrganizedEvents")
-  joinedEvents    Events[]      @relation("JoinedEvents")
-
-  joinedHackathons    UserHackathonParticipants[]
-  organizedHackathons UserHackathonOrganizers[]
-  teamId              String?
-  team                Teams?                      @relation(fields: [teamId], references: [id])
-  Posts               Posts[]
-  JoinedEvents        JoinedEvents[]
+  id                String           @id @default(uuid())
+  createdAt         DateTime         @default(now())
+  email             String           @unique
+  firstName         String?
+  lastName          String?
+  phone             String?
+  username          String?
+  bio               String?
+  location          String?
+  instagramLink     String?
+  githubLink        String?
+  youtubeLink       String?
+  twitterLink       String?
+  websiteLink       String?
+  linkedinLink      String?
+  imageUrl          String?
+  ideas             Ideas[]
+  sampleIdeas       SampleIdeas[]
+  organizedEvents   Events[]         @relation("OrganizedEvents")
+  joinedEvents      Events[]         @relation("JoinedEvents")
+  organizedHackathons Hackathons[]
+  teamId            String?
+  team              Teams?           @relation(fields: [teamId], references: [id])
+  Posts             Posts[]
+  JoinedEvents      JoinedEvents[]
+  JoinedHackathons  JoinedHackathons[]
 
   @@index([teamId])
 }
@@ -47,50 +45,47 @@ model Ideas {
   title     String
   theme     String
   response  String
-
-  userId String
-  user   User    @relation(fields: [userId], references: [id])
-  chart  Charts?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  chart     Charts?
 
   @@index([userId])
 }
 
 model Events {
-  id           String  @id @default(uuid())
-  event_link   String
-  event_name   String
-  imageUrl     String?
-  website_link String
-  social       String?
-  participants String
-  start_date   String
-  end_date     String
-  location     String
-  pincode      String
-  description  String
-
-  members      User[]         @relation("JoinedEvents")
-  createdBy    String
-  user         User           @relation("OrganizedEvents", fields: [createdBy], references: [id])
-  JoinedEvents JoinedEvents[]
+  id            String         @id @default(uuid())
+  event_link    String
+  event_name    String
+  imageUrl      String?
+  website_link  String
+  social        String?
+  participants  String
+  start_date    String
+  end_date      String
+  location      String
+  pincode       String
+  description   String
+  members       User[]         @relation("JoinedEvents")
+  createdBy     String
+  user          User           @relation("OrganizedEvents", fields: [createdBy], references: [id])
+  JoinedEvents  JoinedEvents[]
 
   @@index([createdBy])
 }
 
 model JoinedEvents {
   memberId String
-  member   User   @relation(fields: [memberId], references: [id])
+  member   User     @relation(fields: [memberId], references: [id])
   eventId  String
-  event    Events @relation(fields: [eventId], references: [id])
+  event    Events   @relation(fields: [eventId], references: [id])
 
   @@id([memberId, eventId])
   @@index([eventId])
 }
 
 model Charts {
-  id    String @id @default(uuid())
-  rules String
-
+  id     String @id @default(uuid())
+  rules  String
   ideaId String @unique
   idea   Ideas  @relation(fields: [ideaId], references: [id])
 
@@ -98,46 +93,41 @@ model Charts {
 }
 
 model SampleIdeas {
-  id       String @id @default(uuid())
+  id       String   @id @default(uuid())
   title    String
   response String
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
+  userId   String
+  user     User     @relation(fields: [userId], references: [id])
 
   @@index([userId])
 }
 
 model Hackathons {
-  id                 String                      @id @default(uuid())
-  hackathon_name     String
-  hackathon_website  String
-  theme              String
-  imageUrl           String
-  createdAt          DateTime                    @default(now())
-  updatedAt          DateTime                    @updatedAt
-  location           String
-  description        String
-  contactInfo_1      String
-  contactInfo_2      String
-  contactEmail_1     String
-  contactEmail_2     String
+  id                String             @id @default(uuid())
+  hackathon_name    String
+  hackathon_website String
+  theme             String
+  imageUrl          String
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  location          String
+  description       String
+  contactInfo_1     String
+  contactInfo_2     String
+  contactEmail_1    String
+  contactEmail_2    String
   total_participants Int?
-  participants       UserHackathonParticipants[]
-  organizers         UserHackathonOrganizers[]
+  userId            String
+  createdBy         User               @relation(fields: [userId], references: [id])
+  pincode           String? // Added pincode as it's in the schema
+  social            String? // Added social as it's in the schema
+  start_date        String? // Added start_date as it's in the schema
+  end_date          String? // Added end_date as it's in the schema
+  website_link      String? // Added website_link as it's in the schema
+  participants      JoinedHackathons[]
 }
 
-model UserHackathonParticipants {
-  userId      String
-  user        User       @relation(fields: [userId], references: [id])
-  hackathonId String
-  hackathon   Hackathons @relation(fields: [hackathonId], references: [id])
-
-  @@id([userId, hackathonId])
-  @@index([hackathonId])
-}
-
-model UserHackathonOrganizers {
+model JoinedHackathons {
   userId      String
   user        User       @relation(fields: [userId], references: [id])
   hackathonId String
@@ -148,19 +138,19 @@ model UserHackathonOrganizers {
 }
 
 model Teams {
-  id                 String @id @default(uuid())
-  team_name          String
+  id                String @id @default(uuid())
+  team_name         String
   total_participants Int
-  users              User[]
+  users             User[]
 }
 
 model Posts {
-  id          String @id @default(uuid())
+  id          String   @id @default(uuid())
   post_name   String
   description String
   link        String
   userId      String
-  user        User   @relation(fields: [userId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
 
   @@index([userId])
 }
