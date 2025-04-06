@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/sheet";
 import { Separator } from "../ui/separator";
 import { Events } from "@prisma/client";
-import { format } from 'date-fns';
 import { JoinEventForm } from "./join-event";
 
 const GetEvents = () => {
@@ -71,7 +70,7 @@ const GetEvents = () => {
 
                 <CardContent className="p-0">
                   <div className="flex items-center text-secondary text px-2">
-                    <span className="font-semibold">{event.start_date ? format(new Date(event.start_date), 'MMM dd, yyyy') : 'TBD'}</span>
+                    <span className="font-semibold">{event.start_date ? (new Date(event.start_date), 'MMM dd, yyyy') : 'TBD'}</span>
                   </div>
 
                   {event.location && (
@@ -116,7 +115,7 @@ const GetEvents = () => {
               </div>
              
               <div
-                className="relative w-full rounded-md overflow-hidden mb-6" // Increased margin below image
+                className="relative w-full rounded-md overflow-hidden mb-6" 
                 style={{ maxHeight: '300px' }}
               >
                 {selectedEvent.imageUrl && (
@@ -128,7 +127,7 @@ const GetEvents = () => {
                 )}
               </div>
               <div className="w-full flex flex-col items-start">
-                <SheetHeader className="pb-4 items-start w-full"> {/* Make SheetHeader full width */}
+                <SheetHeader className="pb-4 items-start w-full"> 
                   <SheetTitle className="text-2xl font-semibold text-secondary">
                     {selectedEvent.event_name}
                   </SheetTitle>
@@ -186,28 +185,28 @@ const GetEvents = () => {
                     <div className="relative w-10 h-10 rounded-full bg-neutral-800 flex items-center justify-center text-secondary">
                       <span className="absolute top-0 left-0 w-full h-1/2 flex items-center justify-center text-xs">
                         {selectedEvent.start_date
-                          ? format(new Date(selectedEvent.start_date), 'MMM').toUpperCase()
+                          ? (new Date(selectedEvent.start_date), 'MMM').toUpperCase()
                           : 'TBD'}
                       </span>
                       <span className="absolute bottom-0 left-0 w-full h-1/2 flex items-center justify-center font-semibold">
                         {selectedEvent.start_date
-                          ? format(new Date(selectedEvent.start_date), 'd')
+                          ? (new Date(selectedEvent.start_date), 'd')
                           : 'TBD'}
                       </span>
                     </div>
                     <div>
                       <div className="font-semibold text-secondary">
                         {selectedEvent.start_date
-                          ? format(new Date(selectedEvent.start_date), 'EEEE MMMM d')
+                          ? (new Date(selectedEvent.start_date), 'EEEE MMMM d')
                           : 'TBD'}
                       </div>
                       <div className="text-sm text-secondary">
                         {selectedEvent.start_date
-                          ? format(new Date(selectedEvent.start_date), 'HH:mm')
+                          ? (new Date(selectedEvent.start_date), 'HH:mm')
                           : 'TBD'}{' '}
                         -{' '}
                         {selectedEvent.end_date
-                          ? format(new Date(selectedEvent.end_date), 'HH:mm')
+                          ? (new Date(selectedEvent.end_date), 'HH:mm')
                           : 'TBD'}
                       </div>
                     </div>

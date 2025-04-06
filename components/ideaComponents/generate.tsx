@@ -22,11 +22,13 @@ import { Loader, Sparkle, Lightbulb, ArrowRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import { CardSpotlightDemo } from "./card-spotlight";
+import { useRouter } from "next/navigation"; // Import useRouter
 
 const IdeaGenerator = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [response, setResponse] = useState();
+  const [response, setResponse] = useState(""); // Initialize response as an empty string
+  const router = useRouter(); // Initialize useRouter
 
   const form = useForm<z.infer<typeof chatSchema>>({
     resolver: zodResolver(chatSchema),
@@ -46,35 +48,43 @@ const IdeaGenerator = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post("/api/ideas", values);
-      console.log("API Response:", response);
+      const apiResponse = await axios.post("/api/idea/generate-idea", values);
+      console.log("API Response:", apiResponse);
 
-      if (response.status === 200 && response.data) {
-        setResponse(response.data.result);
+      if (apiResponse.status === 200 && apiResponse.data && apiResponse.data.result) {
+        setResponse(apiResponse.data.result);
         setSuccess(true);
-        console.log("Processed Response:", response.data);
+        console.log("Processed Response:", apiResponse.data);
       } else {
-        console.error("Invalid API response format:", response);
+        console.error("Invalid API response format:", apiResponse);
+        setSuccess(false); // Ensure success is false on error
       }
     } catch (error) {
       console.error("Error while generating idea:", error);
+      setSuccess(false); // Ensure success is false on error
     } finally {
       setLoading(false);
     }
   }
 
-  return (
-      <div className="mx-auto flex items-center justify-center h-screen"> {/* Adjusted for centering */}
-    <CardSpotlightDemo>
+  // Function to handle the "Ideas Generated" link click
+  const handleViewIdeas = () => {
+    if (response) {
+      router.push(`/sample/${encodeURIComponent(response)}`);
+    }
+  };
 
+  return (
+    <div className="mx-auto flex items-center justify-center h-screen"> {/* Adjusted for centering */}
+      <CardSpotlightDemo>
         <Card className="w-full  max-w-md border-none bg-transparent  text-white">
-    {/* Added max-w-md for better mobile view */}
+          {/* Added max-w-md for better mobile view */}
           <CardContent className="p-6 space-y-6 ">
             {/* <div className="flex items-center justify-center mb-2">
-            <div className=" rounded-full p-3">
-              <Lightbulb className="h-8 w-8 text-orange-500" />
-            </div>
-          </div> */}
+              <div className=" rounded-full p-3">
+                <Lightbulb className="h-8 w-8 text-orange-500" />
+              </div>
+            </div> */}
 
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
@@ -141,23 +151,20 @@ const IdeaGenerator = () => {
                 </Button>
 
                 {success && response && (
-                  <Link
-                    href={`/sample/${encodeURIComponent(response)}`}
-                    className="flex items-center justify-center w-full p-4 mt-4 text-orange-600 font-medium rounded-lg bg-orange-50 dark:bg-orange-900/20 hover:bg-orange-100 dark:hover:bg-orange-900/30 transition-colors"
+                  <div
+                    onClick={handleViewIdeas}
+                    className="flex items-center relative justify-center w-full p-4 mt-4 text-orange-600 font-medium rounded-lg bg-orange-50 dark:bg-orange-900/20 hover:bg-orange-100 dark:hover:bg-orange-900/30 transition-colors cursor-pointer"
                   >
                     Ideas Generated
                     <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
+                  </div>
                 )}
               </form>
             </Form>
           </CardContent>
-
         </Card>
-    </CardSpotlightDemo>
-
-      </div>
-
+      </CardSpotlightDemo>
+    </div>
   );
 };
 
