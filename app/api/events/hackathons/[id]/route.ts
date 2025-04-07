@@ -1,11 +1,13 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import axios from 'axios';
 import { currentUser } from "@clerk/nextjs/server";
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET( { params }: { params: { id: string } }) {
     try {
-        if (!params.id) {
+        const resolvedParams =  params;
+        const { id } = resolvedParams;
+
+        if (!id) {
             return NextResponse.json(
                 { error: "Hackathon ID is required" },
                 { status: 400 }
@@ -29,13 +31,13 @@ export async function GET(request: Request, { params }: { params: { id: string }
         }
 
         const hackathon = await prisma.hackathons.findUnique({
-            where:{
-                id:params.id
+            where: {
+                id: id
             }
-        })
+        });
 
-        return NextResponse.json({ result:hackathon }, { status: 200 });
+        return NextResponse.json({ result: hackathon }, { status: 200 });
     } catch (error) {
-        return NextResponse.json({message:"Internal server error"}, {status:500})
+        return NextResponse.json({ message: "Internal server error" }, { status: 500 })
     }
-} 
+}

@@ -1,13 +1,11 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { GlowingCard } from "@/components/ui/glowing-card";
 
 export default function HackathonNotFound() {
     return (
         <div className="container mx-auto px-4 py-24">
             <div className="flex flex-col items-center justify-center text-center">
-                <GlowingCard className="max-w-md mx-auto">
                     <div className="p-8">
                         <h1 className="text-3xl font-bold text-orange-600 mb-4">
                             Hackathon Not Found
@@ -21,7 +19,6 @@ export default function HackathonNotFound() {
                             </Link>
                         </Button>
                     </div>
-                </GlowingCard>
             </div>
         </div>
     );
