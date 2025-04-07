@@ -41,6 +41,7 @@ const CreateHackathon = () => {
             contactEmail_1: "",
             contactEmail_2: "",
             start_date: "",
+            prizePool:"",
             end_date: "",
             social: "",
             pincode: "",
@@ -298,7 +299,24 @@ const CreateHackathon = () => {
                                             </FormItem>
                                         )}
                                     />
-
+                                        <FormField
+                                        control={control}
+                                        name="prizePool"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <div className='relative'>
+                                                    <LinkIcon className='absolute left-3 top-3 h-4 w-4 text-secondary' />
+                                                    <Input
+                                                        placeholder='Prize pool '
+                                                        type='text'
+                                                        className='border-neutral-700 bg-neutral-900 w-60 text-secondary pl-8'
+                                                        {...field}
+                                                    />
+                                                </div>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
                                     <FormField
                                         control={control}
                                         name="contactInfo_1"

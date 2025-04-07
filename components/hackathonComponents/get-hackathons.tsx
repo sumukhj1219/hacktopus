@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import { CalendarIcon, Trophy, Code, UsersIcon } from 'lucide-react';
+import { CalendarIcon, Trophy, Code, UsersIcon, Link } from 'lucide-react';
 import { format } from 'date-fns';
 import Image from 'next/image';
 import axios from 'axios';
@@ -13,7 +13,7 @@ interface Hackathon {
   imageUrl: string;
   start_date: string;
   end_date: string;
-  price?: number;
+  pricePool?: string;
   projectsCount?: number;
   participantsCount?: number;
 }
@@ -26,7 +26,9 @@ const HackathonCard = ({ hackathon }: { hackathon: Hackathon }) => {
     <div>
       <h1 className='text-secondary font-bold mt-10 text-3xl'>Hackathons</h1>
       <Separator className='bg-neutral-700 mt-2' />
+      <Link href={`/hackathons/${hackathon.id}`}>
       <div className="bg-neutral-900 rounded-lg mt-10 shadow-md p-6 flex items-center justify-between">
+
         <div className="flex items-center space-x-4">
           <div className="relative w-20 h-20 rounded-md overflow-hidden">
             <Image
@@ -50,10 +52,10 @@ const HackathonCard = ({ hackathon }: { hackathon: Hackathon }) => {
           </div>
         </div>
         <div className="text-right">
-          {hackathon.price !== undefined && (
-            <p className="text-blue-600 font-medium">
+          {hackathon.pricePool !== "" && (
+            <p className="text-secondary font-medium">
               <Trophy className="inline-block w-4 h-4 mr-1" />
-              ${hackathon.price}
+              ${hackathon.pricePool}
             </p>
           )}
           {hackathon.projectsCount !== undefined && (
@@ -68,11 +70,13 @@ const HackathonCard = ({ hackathon }: { hackathon: Hackathon }) => {
               {hackathon.participantsCount} participants
             </p>
           )}
-          {(hackathon.price === undefined && hackathon.projectsCount === undefined && hackathon.participantsCount === undefined) && (
+          {/* {(hackathon.prizePool === undefined && hackathon.projectsCount === undefined && hackathon.participantsCount === undefined) && (
             <p className="text-gray-700 text-sm">Details coming soon</p>
-          )}
+          )} */}
         </div>
       </div>
+      </Link>
+      
     </div>
 
   );

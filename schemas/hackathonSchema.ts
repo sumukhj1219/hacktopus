@@ -39,5 +39,6 @@ export const hackathonSchema = z.object({
     end_date: z.string()
         .min(1, { message: "End date is required." }),
     website_link: z.string()
-        .min(1, { message: "Website link is required." })
+        .min(1, { message: "Website link is required." }),
+    prizePool:z.string().min(1,{message:"Price pool is required."})
 });

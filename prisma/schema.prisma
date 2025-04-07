@@ -119,6 +119,7 @@ model Hackathons {
   total_participants Int?
   userId            String
   createdBy         User               @relation(fields: [userId], references: [id])
+  prizePool         String
   pincode           String? // Added pincode as it's in the schema
   social            String? // Added social as it's in the schema
   start_date        String? // Added start_date as it's in the schema

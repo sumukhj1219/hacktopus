@@ -4,8 +4,6 @@ import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { notFound } from "next/navigation";
 import axios from "axios";
-import { GlowingCard } from "@/components/ui/glowing-card";
-import { Sparkles } from "@/components/ui/sparkles";
 import { Calendar, Globe, MapPin, Users, Clock, Award, Target, ExternalLink, ArrowLeft, Loader2, Sparkle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -30,6 +28,8 @@ interface HackathonDetails {
     organizer?: string;
     requirements?: string;
     deadline?: string;
+    imageUrl?: string; // Add imageUrl field
+    pricePool?: number; // Add pricePool field
 }
 
 export default function HackathonDetailsPage() {
@@ -46,7 +46,7 @@ export default function HackathonDetailsPage() {
                 setLoading(true);
                 setScrapingStatus("Locating hackathon information...");
 
-                const response = await axios.get(`/api/hackathons/${id}`);
+                const response = await axios.get(`/api/events/hackathons/${id}`);
 
                 if (response.status === 200 && response.data.hackathon) {
                     setHackathon(response.data.hackathon);
@@ -98,8 +98,6 @@ export default function HackathonDetailsPage() {
                 >
                     <ArrowLeft className="mr-1 h-4 w-4" /> Back to Hackathons
                 </Link>
-
-                <GlowingCard className="max-w-xl mx-auto">
                     <div className="p-8 text-center">
                         <h2 className="text-2xl font-bold text-red-500 mb-4">Oops! Something went wrong</h2>
                         <p className="text-gray-600 dark:text-gray-400 mb-6">{error || "Unable to load hackathon details"}</p>
@@ -109,10 +107,12 @@ export default function HackathonDetailsPage() {
                             </Link>
                         </Button>
                     </div>
-                </GlowingCard>
             </div>
         );
     }
+
+    const startDate = hackathon.date?.split(' - ')[0];
+    const endDate = hackathon.date?.split(' - ')[1];
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -123,165 +123,87 @@ export default function HackathonDetailsPage() {
                 <ArrowLeft className="mr-1 h-4 w-4" /> Back to Hackathons
             </Link>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="md:col-span-2">
-                    <GlowingCard className="h-full">
-                        <div className="p-6">
-                            <div className="flex flex-wrap gap-2 mb-4">
-                                <Badge className={`${hackathon.platform === 'devfolio' ? 'bg-blue-500' : 'bg-purple-500'} capitalize`}>
-                                    {hackathon.platform}
-                                </Badge>
-                                {hackathon.deadline && (
-                                    <Badge variant="warning">
-                                        Deadline: {hackathon.deadline}
-                                    </Badge>
-                                )}
-                            </div>
-
-                            <Sparkles>
-                                <h1 className="text-2xl md:text-3xl font-bold text-orange-600 mb-4">
-                                    {hackathon.hackathon_name}
-                                </h1>
-                            </Sparkles>
-
-                            {hackathon.description && (
-                                <div className="mb-6">
-                                    <h2 className="text-xl font-semibold mb-2">About</h2>
-                                    <div className="text-gray-700 dark:text-gray-300 prose prose-sm max-w-none">
-                                        {hackathon.description.split('\n').map((paragraph, idx) => (
-                                            paragraph.trim() ? <p key={idx} className="mb-2">{paragraph}</p> : null
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-
-                            {hackathon.theme && (
-                                <div className="mb-6">
-                                    <h2 className="text-xl font-semibold mb-2">Theme</h2>
-                                    <p className="text-gray-700 dark:text-gray-300">
-                                        {hackathon.theme}
-                                    </p>
-                                </div>
-                            )}
-
-                            {hackathon.requirements && (
-                                <div className="mb-6">
-                                    <h2 className="text-xl font-semibold mb-2">Requirements</h2>
-                                    <div className="text-gray-700 dark:text-gray-300">
-                                        {hackathon.requirements.split('\n').map((line, idx) => (
-                                            line.trim() ? <p key={idx} className="mb-1">{line}</p> : null
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-
-                            {hackathon.prizes && (
-                                <div className="mb-6">
-                                    <h2 className="text-xl font-semibold mb-2">Prizes</h2>
-                                    <div className="text-gray-700 dark:text-gray-300">
-                                        {hackathon.prizes.split('\n').map((line, idx) => (
-                                            line.trim() ? <p key={idx} className="mb-1">{line}</p> : null
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-
-                            <div className="flex flex-col md:flex-row gap-4 mt-6">
-                                <Button className="w-full md:w-auto" asChild>
-                                    <a href={hackathon.hackathon_link} target="_blank" rel="noopener noreferrer">
-                                        <ExternalLink className="mr-2 h-4 w-4" /> Apply Now
-                                    </a>
-                                </Button>
-                                {hackathon.website_link && (
-                                    <Button variant="outline" className="w-full md:w-auto" asChild>
-                                        <a href={hackathon.website_link} target="_blank" rel="noopener noreferrer">
-                                            <Globe className="mr-2 h-4 w-4" /> Visit Website
-                                        </a>
-                                    </Button>
-                                )}
-                                <Button 
-                                    className="w-full md:w-auto"
-                                    variant="outline"
-                                    asChild
-                                >
-                                    <Link href="/idea">
-                                        <Sparkle className="mr-2 h-4 w-4" />
-                                        Generate Project Idea
-                                    </Link>
-                                </Button>
-                            </div>
-                        </div>
-                    </GlowingCard>
+            <div className="grid grid-cols-1 gap-8">
+                {/* Cover Section */}
+                <div
+                    className="bg-orange-500 text-white relative rounded-lg overflow-hidden"
+                    style={{ minHeight: '20vh', maxHeight: '30vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                >
+                    {hackathon.imageUrl && (
+                        <img
+                            src={hackathon.imageUrl}
+                            alt="Hackathon Cover"
+                            className="absolute inset-0 w-full h-full object-cover"
+                        />
+                    )}
+                    <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                        <h1 className="text-3xl md:text-4xl font-bold text-center">{hackathon.hackathon_name}</h1>
+                    </div>
                 </div>
 
-                <div>
-                    <GlowingCard className="h-full">
+                {/* Main Content Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {/* Left Grid: Buttons */}
+                    <div className="space-y-4 md:col-span-1 lg:col-span-1">
+                        <Button className="w-full">Register</Button>
+                        <Button variant="outline" className="w-full">Make Team</Button>
+                        <Button variant="secondary" className="w-full">My Team</Button>
+                    </div>
+
                         <div className="p-6">
-                            <h2 className="text-xl font-semibold mb-4">Hackathon Details</h2>
-
-                            <div className="space-y-4">
-                                {hackathon.date && (
-                                    <div className="flex items-start gap-3">
-                                        <Calendar className="h-5 w-5 text-orange-500 mt-0.5" />
-                                        <div>
-                                            <h3 className="font-medium">Date</h3>
-                                            <p className="text-gray-600 dark:text-gray-400">{hackathon.date}</p>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {hackathon.duration && (
-                                    <div className="flex items-start gap-3">
-                                        <Clock className="h-5 w-5 text-orange-500 mt-0.5" />
-                                        <div>
-                                            <h3 className="font-medium">Duration</h3>
-                                            <p className="text-gray-600 dark:text-gray-400">{hackathon.duration}</p>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {hackathon.location && (
-                                    <div className="flex items-start gap-3">
-                                        <MapPin className="h-5 w-5 text-orange-500 mt-0.5" />
-                                        <div>
-                                            <h3 className="font-medium">Location</h3>
-                                            <p className="text-gray-600 dark:text-gray-400">{hackathon.location}</p>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {hackathon.participants && (
-                                    <div className="flex items-start gap-3">
-                                        <Users className="h-5 w-5 text-orange-500 mt-0.5" />
-                                        <div>
-                                            <h3 className="font-medium">Participants</h3>
-                                            <p className="text-gray-600 dark:text-gray-400">{hackathon.participants}</p>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {hackathon.organizer && (
-                                    <div className="flex items-start gap-3">
-                                        <Award className="h-5 w-5 text-orange-500 mt-0.5" />
-                                        <div>
-                                            <h3 className="font-medium">Organizer</h3>
-                                            <p className="text-gray-600 dark:text-gray-400">{hackathon.organizer}</p>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-
-                            <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
-                                <h3 className="font-medium mb-2">Source</h3>
-                                <p className="text-sm text-gray-500">
-                                    Information scraped from {hackathon.platform} and may not be complete.
-                                    Visit the official website for the most accurate details.
-                                </p>
-                            </div>
+                            <h2 className="text-xl font-semibold mb-4">Description</h2>
+                            {hackathon.description ? (
+                                <div className="text-gray-700 dark:text-gray-300 prose prose-sm max-w-none">
+                                    {hackathon.description.split('\n').map((paragraph, idx) => (
+                                        paragraph.trim() ? <p key={idx} className="mb-2">{paragraph}</p> : null
+                                    ))}
+                                </div>
+                            ) : (
+                                <p className="text-gray-500 dark:text-gray-400">No description available.</p>
+                            )}
                         </div>
-                    </GlowingCard>
+
+                        <div className="p-6 space-y-4">
+                            <h2 className="text-xl font-semibold mb-2">Details</h2>
+                            {hackathon.pricePool !== undefined && (
+                                <div className="flex items-center gap-3">
+                                    <Award className="h-5 w-5 text-yellow-500" />
+                                    <span>Prize Pool: ${hackathon.pricePool}</span>
+                                </div>
+                            )}
+                            <div className="flex items-center gap-3">
+                                <Users className="h-5 w-5 text-blue-500" />
+                                <span>Participants: {hackathon.participants || 'N/A'}</span>
+                            </div>
+                            {startDate && (
+                                <div className="flex items-center gap-3">
+                                    <Calendar className="h-5 w-5 text-green-500" />
+                                    <span>Start Date: {startDate}</span>
+                                </div>
+                            )}
+                            {endDate && (
+                                <div className="flex items-center gap-3">
+                                    <Calendar className="h-5 w-5 text-red-500" />
+                                    <span>End Date: {endDate}</span>
+                                </div>
+                            )}
+                            {hackathon.location && (
+                                <div className="flex items-center gap-3">
+                                    <MapPin className="h-5 w-5 text-purple-500" />
+                                    <span>Location: {hackathon.location}</span>
+                                </div>
+                            )}
+                            {hackathon.website_link && (
+                                <div className="flex items-center gap-3">
+                                    <Globe className="h-5 w-5 text-gray-500" />
+                                    <Link href={hackathon.website_link} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                                        Visit Website
+                                    </Link>
+                                </div>
+                            )}
+                        </div>
                 </div>
             </div>
         </div>
     );
-} 
+}

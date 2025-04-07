@@ -37,6 +37,7 @@ export async function POST(request: NextRequest) {
             pincode,
             social,
             start_date,
+            prizePool,
             end_date,
             website_link,
         } = body;
@@ -57,6 +58,7 @@ export async function POST(request: NextRequest) {
                 social,
                 start_date,
                 end_date,
+                prizePool,
                 website_link,
                 userId: existingUser.id, 
             },
